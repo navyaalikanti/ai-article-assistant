@@ -4,22 +4,22 @@ An AI-powered Chrome extension built using the Gemini API that helps users quick
 
 ## Features
 
-✔ Article summarization  
+Article summarization  
 Summarizes the currently opened web article in multiple formats:
 - Brief summary
 - Detailed summary
 - Bullet-point summary
 
-✔ Multi-tab summarization  
+Multi-tab summarization  
 Reads and analyzes content from all open tabs and generates a combined summary.
 
-✔ Contextual question-answering  
+Contextual question-answering  
 Allows users to ask questions related to the article content and receive accurate, context-aware answers.
 
-✔ Real-time content extraction  
+Real-time content extraction  
 Automatically extracts readable text from web pages when the extension is opened.
 
-✔ Productivity-focused design  
+Productivity-focused design  
 Minimizes reading time and helps users grasp key points faster.
 
 ## How It Works
