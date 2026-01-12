@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Article Assistant</title>
+
+  <style>
+    body {
+      font-family: "Segoe UI", system-ui, Arial, sans-serif;
+      width: 540px;
+      padding: 14px;
+      background: #f8fafc;
+    }
+
+    h2 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    /* ---------- TOP BAR ---------- */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    select {
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 13px;
+    }
+
+    button {
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    #summarize {
+      background: #4f46e5;
+      color: white;
+    }
+
+    #summarize-tabs {
+      background: #0ea5e9;
+      color: white;
+    }
+
+    #chat-toggle {
+      background: #16a34a;
+      color: white;
+    }
+
+    /* ---------- SUMMARY HEADER ---------- */
+    .summary-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    #copy-btn {
+      width: 34px;
+      height: 30px;
+      background: #f3f4f6;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    #copy-btn:hover {
+      background: #e5e7eb;
+    }
+
+    #copy-btn::after {
+      content: "Copy";
+      position: absolute;
+      bottom: -22px;
+      background: #111827;
+      color: white;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    #copy-btn:hover::after {
+      opacity: 1;
+    }
+
+    .copy-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #9ca3af;
+      border-radius: 3px;
+    }
+
+    .copy-icon::after {
+      content: "";
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #d1d5db;
+      border-radius: 3px;
+      background: #f3f4f6;
+    }
+
+    /* ---------- SUMMARY ---------- */
+    #result {
+      padding: 10px;
+      background: #f9fafb;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+      max-height: 180px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    /* ---------- CHAT ---------- */
+    #chat-panel {
+      display: none;
+      margin-top: 10px;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 8px;
+    }
+
+    #chat-messages {
+      max-height: 180px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .chat-user {
+      align-self: flex-end;
+      background: #4f46e5;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 10px 10px 0 10px;
+      font-size: 13px;
+      max-width: 80%;
+    }
+
+    .chat-ai {
+      align-self: flex-start;
+      background: #f1f5f9;
+      color: #111827;
+      padding: 6px 10px;
+      border-radius: 10px 10px 10px 0;
+      font-size: 13px;
+      max-width: 80%;
+    }
+
+    .chat-box {
+      display: flex;
+      gap: 6px;
+    }
+
+    textarea {
+      flex: 1;
+      height: 36px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      resize: none;
+      font-size: 13px;
+    }
+
+    #send-btn {
+      width: 36px;
+      background: #16a34a;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 11px;
+      margin-top: 6px;
+      color: #6b7280;
+    }
+    .chat-user,
+.chat-ai {
+  white-space: pre-wrap;
+}
+
+  </style>
+</head>
+
+<body>
+  <h2> AI Article Assistant</h2>
+
+  <div class="card">
+    <div class="top-bar">
+      <select id="summary-type">
+        <option value="brief">Brief</option>
+        <option value="detailed">Detailed</option>
+        <option value="bullets">Bullets</option>
+      </select>
+
+      <button id="summarize">Summarize</button>
+      <button id="summarize-tabs">Summarize Tabs</button>
+      <button id="chat-toggle">CHAT</button>
+    </div>
+
+    <div class="summary-header">
+      <span>Summary</span>
+      <button id="copy-btn">
+        <span class="copy-icon"></span>
+      </button>
+    </div>
+
+    <div id="result">Open an article and click Summarize.</div>
+
+    <div id="chat-panel">
+      <div id="chat-messages"></div>
+
+      <div class="chat-box">
+        <textarea id="chat-input" placeholder="Ask something..."></textarea>
+        <button id="send-btn">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>Powered by Gemini 2.5 Flash-Lite</footer>
+  <script src="popup.js"></script>
+</body>
+</html>
